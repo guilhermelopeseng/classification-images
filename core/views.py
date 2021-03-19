@@ -3,7 +3,7 @@ from django.http import HttpRequest
 from django.contrib import messages
 
 import clothesClassification
-from clothesClassification.settings import BASE_DIR
+from clothesClassification.settings.base import BASE_DIR
 
 from .forms import ImageModelForm
 from .models import Image
