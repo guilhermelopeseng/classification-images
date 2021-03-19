@@ -5,7 +5,7 @@ from stdimage.models import StdImageField
 from django.db.models import signals
 
 import clothesClassification
-from clothesClassification.settings import BASE_DIR
+from clothesClassification.settings.base import BASE_DIR
 
 import src
 from src.classification.predict import predictClothes
