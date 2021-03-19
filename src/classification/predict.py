@@ -1,7 +1,6 @@
 from PIL import Image, ImageOps
 import numpy as np
 from tensorflow.keras import models
-from tensorflow.keras.datasets import fashion_mnist
 
 
 def predictClothes(filenameImage, filenameModel):
