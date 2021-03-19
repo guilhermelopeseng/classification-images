@@ -1,19 +1,20 @@
-from PIL import Image
+from PIL import Image, ImageOps
 import numpy as np
-from keras import models
-def predictClothes(filenameImage, filenameModel, filenameWeights):
+from tensorflow.keras import models
+from tensorflow.keras.datasets import fashion_mnist
+
+
+def predictClothes(filenameImage, filenameModel):
   image = Image.open(filenameImage) # buscar imagem no diretório enviado
-  image = image.convert('L') #tranformar para o formato greenscaler
   image = image.resize((28,28)) #organização do shape de entrada
+  image = ImageOps.grayscale(image) #tranformar para o formato grayscaler
   image = np.array(image, ndmin=3)/255 #normalização da imagem
 
-  json_file = open(filenameModel, 'r') #abre o arquivo
-  loaded_model_json = json_file.read() # le o arquivo em json
-  json_file.close() # fecha o arquivo
-  model = models.model_from_json(loaded_model_json) # carrega o modelo
-  model.load_weights(filenameWeights)# carrega os pesos
+  model = models.load_model(filenameModel)
 
-  result_predict = int(model.predict_classes(image)) # faz a previsão e converte para inteiro
+  result_predict = int(np.argmax(model.predict(image),axis=-1)) #faz a previsão
+  print(np.argmax(model.predict(image),axis=-1))
+  print(model.predict(image))
 
   nome_classes = ["Camiseta", "Calça", "Suéter", "Vestido", "Casaco","Sandália","Camisa","Tênis", "Bolsa","Botas"]
   result = str(nome_classes[result_predict])

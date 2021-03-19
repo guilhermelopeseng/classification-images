@@ -1,0 +1,33 @@
+{% load bootstrap4 %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% bootstrap_css %}
+  <title>Teste Projeto Classificador de Roupas</title>
+</head>
+<body>
+  <div class="container">
+    <form action="{%url 'index' %}" method="POST" class="form" enctype="multipart/form-data">
+      {% csrf_token %}
+      {% bootstrap_form form %}
+      <div class="buttons">
+        {% buttons %}
+          <button type="submit" class="btn btn-primary">Enviar Imagem</button>
+        {% endbuttons %}
+      </div>
+    </form>
+    <div class="messages">
+      {% bootstrap_messages %}
+    </div>
+    {% if form_valid == True %}
+      <img src="{{ image.url }}" alt="Resultado" width="100" height="100"/>
+    {% else %}
+      <p>Carregando...</p>
+    {% endif %}
+  </div>
+</body>
+{% bootstrap_javascript jquery='full' %}
+</html>

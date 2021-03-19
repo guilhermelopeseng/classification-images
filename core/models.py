@@ -2,6 +2,14 @@ import uuid
 from django.db import models
 from stdimage.models import StdImageField
 
+from django.db.models import signals
+
+import clothesClassification
+from clothesClassification.settings import BASE_DIR
+
+import src
+from src.classification.predict import predictClothes
+
 def get_file_path(instace, filename):
   ext = filename.split('.')[-1]
   filename = f'{uuid.uuid4()}.{ext}'
@@ -21,3 +29,16 @@ class Image(models.Model):
   
   def __str__(self):
     return f'{self.predict}: {self.image}'
+
+def image_post_save(signal, instance, sender, **kwargs):
+  signals.post_save.disconnect(image_post_save, sender=Image)
+  filenameImage = BASE_DIR/'media'/instance.image.name
+  filenameModel = BASE_DIR/'models'
+  instance.predict = predictClothes(filenameImage,filenameModel)
+  instance.save()
+  signals.post_save.connect(image_post_save, sender=Image)
+
+signals.post_save.connect(image_post_save, sender=Image)
+
+
+
