@@ -1,15 +1,22 @@
 {% load bootstrap4 %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="{% static 'images/logo-lasi.ico' %}" type="image/x-icon">
   {% bootstrap_css %}
   <title>Teste Projeto Classificador de Roupas</title>
 </head>
 <body>
   <div class="container">
+    {% if form_valid == True %}
+      <img src="{{ image.url }}" alt="Resultado" width="100" height="100"/>
+    {% else %}
+      <p>Selecione uma imagem para a previsão da Rede Neural Convolucional</p>
+    {% endif %}
     <form action="{%url 'index' %}" method="POST" class="form" enctype="multipart/form-data">
       {% csrf_token %}
       {% bootstrap_form form %}
@@ -22,11 +29,6 @@
     <div class="messages">
       {% bootstrap_messages %}
     </div>
-    {% if form_valid == True %}
-      <img src="{{ image.url }}" alt="Resultado" width="100" height="100"/>
-    {% else %}
-      <p>Carregando...</p>
-    {% endif %}
   </div>
 </body>
 {% bootstrap_javascript jquery='full' %}
